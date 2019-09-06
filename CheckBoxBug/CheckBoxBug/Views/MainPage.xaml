@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:behaviors="clr-namespace:Prism.Behaviors;assembly=Prism.Forms"
+             xmlns:checkBoxBug="clr-namespace:CheckBoxBug;assembly=CheckBoxBug"
+             x:Class="CheckBoxBug.Views.MainPage"
+             Title="{Binding Title}">
+
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <checkBoxBug:SelectionChangedEventArgsConverter x:Key="SelectionChangedEventArgsConverter" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+
+    <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+
+      
+      <Label Text="Working"></Label>
+
+      <CheckBox IsChecked="true" Color="Green">
+        <CheckBox.Behaviors>
+          <behaviors:EventToCommandBehavior EventName="CheckedChanged"
+                                            Command="{Binding ItemSelectedCommand}"
+                                            EventArgsConverter="{StaticResource SelectionChangedEventArgsConverter}"/>
+        </CheckBox.Behaviors>
+      </CheckBox>
+
+      <Label Text="Not working collection view"></Label>
+
+
+      <CollectionView  ItemsSource="{Binding Items}" SelectionMode="None" >
+       
+        <CollectionView.ItemsLayout>
+          <GridItemsLayout Orientation="Vertical" Span="1"/>
+        </CollectionView.ItemsLayout>
+        <CollectionView.ItemTemplate>
+          <DataTemplate>
+            <Frame>
+
+              <CheckBox IsChecked="true" Color="Red">
+                    <CheckBox.Behaviors>
+                      <behaviors:EventToCommandBehavior EventName="CheckedChanged"
+                                                        Command="{Binding ItemSelectedCommand}"
+                                                        EventArgsConverter="{StaticResource SelectionChangedEventArgsConverter}"/>
+                    </CheckBox.Behaviors>
+              </CheckBox>
+
+            </Frame>
+          </DataTemplate>
+        </CollectionView.ItemTemplate>
+      </CollectionView>
+      
+    </StackLayout>
+
+</ContentPage>
